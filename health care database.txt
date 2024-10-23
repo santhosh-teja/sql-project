@@ -1,0 +1,148 @@
+-- Create database
+CREATE DATABASE healthcare;
+USE healthcare;
+
+-- Create Patient table
+CREATE TABLE Patient (
+    P_ID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    Age INT,
+    Gender VARCHAR(50),
+    DOB DATE,
+    Mob_No VARCHAR(15)
+);
+
+-- Insert values into Patient table
+INSERT INTO Patient (P_ID, Name, Age, Gender, DOB, Mob_No)
+VALUES 
+(1, 'John Doe', 35, 'Male', '1989-05-23', '9876543210'),
+(2, 'Jane Smith', 28, 'Female', '1996-01-15', '8765432109'),
+(3, 'Alice Brown', 42, 'Female', '1981-07-09', '7654321098');
+
+-- Create Employee table
+CREATE TABLE Employee (
+    E_ID INT PRIMARY KEY,
+    Name VARCHAR(255),
+    Sex VARCHAR(50),
+    Salary DECIMAL(10, 2),
+    Mob_No VARCHAR(15),
+    Address VARCHAR(255),
+    City VARCHAR(100),
+    State VARCHAR(100),
+    Pin_no VARCHAR(10)
+);
+
+-- Insert values into Employee table
+INSERT INTO Employee (E_ID, Name, Sex, Salary, Mob_No, Address, City, State, Pin_no)
+VALUES 
+(1, 'Dr. Robert Lang', 'Male', 75000, '9876543210', '123 Main St', 'New York', 'NY', '10001'),
+(2, 'Dr. Anna Taylor', 'Female', 85000, '8765432109', '456 Park Ave', 'Los Angeles', 'CA', '90001'),
+(3, 'Dr. Michael Green', 'Male', 80000, '7654321098', '789 Oak St', 'Chicago', 'IL', '60007'),
+(4, 'Nurse Emma Johnson', 'Female', 55000, '6543210987', '101 Pine St', 'Boston', 'MA', '02108'),
+(5, 'Nurse Olivia White', 'Female', 54000, '5432109876', '202 Cedar St', 'San Francisco', 'CA', '94102'),
+(6, 'Nurse Lucas Brown', 'Male', 53000, '4321098765', '303 Maple St', 'Houston', 'TX', '77001'),
+(7, 'Receptionist Sarah Davis', 'Female', 45000, '3210987654', '404 Elm St', 'Miami', 'FL', '33101'),
+(8, 'Receptionist Mark Wilson', 'Male', 46000, '2109876543', '505 Birch St', 'Seattle', 'WA', '98101');
+
+-- Create Doctor table
+CREATE TABLE Doctor (
+    E_ID INT PRIMARY KEY,
+    Dept VARCHAR(255),
+    Qualification VARCHAR(255),
+    FOREIGN KEY (E_ID) REFERENCES Employee(E_ID)
+);
+
+-- Insert values into Doctor table
+INSERT INTO Doctor (E_ID, Dept, Qualification)
+VALUES 
+(1, 'Cardiology', 'MD'),
+(2, 'Neurology', 'MBBS, MD'),
+(3, 'Pediatrics', 'MD, Pediatrics');
+
+-- Create Nurse table
+CREATE TABLE Nurse (
+    E_ID INT PRIMARY KEY,
+    Qualification VARCHAR(255),
+    FOREIGN KEY (E_ID) REFERENCES Employee(E_ID)
+);
+
+-- Insert values into Nurse table
+INSERT INTO Nurse (E_ID, Qualification)
+VALUES 
+(4, 'BSc Nursing'),
+(5, 'BSc Nursing'),
+(6, 'Diploma in Nursing');
+
+-- Create Receptionist table
+CREATE TABLE Receptionist (
+    E_ID INT PRIMARY KEY,
+    FOREIGN KEY (E_ID) REFERENCES Employee(E_ID)
+);
+
+-- Insert values into Receptionist table
+INSERT INTO Receptionist (E_ID)
+VALUES 
+(7),
+(8);
+
+-- Create Room table
+CREATE TABLE Room (
+    R_ID INT PRIMARY KEY,
+    Type VARCHAR(255),
+    Capacity INT,
+    Availability BOOLEAN
+);
+
+-- Insert values into Room table
+INSERT INTO Room (R_ID, Type, Capacity, Availability)
+VALUES 
+(1, 'Single', 1, TRUE),
+(2, 'Double', 2, FALSE),
+(3, 'ICU', 1, TRUE);
+
+-- Create Test_Report table
+CREATE TABLE Test_Report (
+    Test_Report_ID INT PRIMARY KEY,
+    Result VARCHAR(255),
+    Test_Type VARCHAR(255),
+    P_ID INT,
+    R_ID INT,
+    FOREIGN KEY (P_ID) REFERENCES Patient(P_ID),
+    FOREIGN KEY (R_ID) REFERENCES Room(R_ID)
+);
+
+-- Insert values into Test_Report table
+INSERT INTO Test_Report (Test_Report_ID, Result, Test_Type, P_ID, R_ID)
+VALUES 
+(1, 'Positive', 'Blood Test', 1, 1),
+(2, 'Negative', 'X-Ray', 2, 2),
+(3, 'Inconclusive', 'MRI', 3, 3);
+
+-- Create Bills table
+CREATE TABLE Bills (
+    Bill_ID INT PRIMARY KEY,
+    Amount DECIMAL(10, 2),
+    P_ID INT,
+    FOREIGN KEY (P_ID) REFERENCES Patient(P_ID)
+);
+
+-- Insert values into Bills table
+INSERT INTO Bills (Bill_ID, Amount, P_ID)
+VALUES 
+(1, 500.00, 1),
+(2, 1200.00, 2),
+(3, 750.00, 3);
+
+-- Create Records table
+CREATE TABLE Records (
+    Record_ID INT PRIMARY KEY,
+    App_No INT,
+    Record_No INT
+);
+
+-- Insert values into Records table
+INSERT INTO Records (Record_ID, App_No, Record_No)
+VALUES 
+(1, 101, 1001),
+(2, 102, 1002),
+(3, 103, 1003);

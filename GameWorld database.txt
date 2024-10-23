@@ -1,0 +1,106 @@
+CREATE DATABASE GameWorld;
+USE GameWorld;
+
+-- Account table
+CREATE TABLE Account (
+    AcctName VARCHAR(50),
+    Password VARCHAR(50),
+    LastSignedOn DATE,
+    SbscrbrName VARCHAR(50),
+    SbscrbrAddress VARCHAR(100),
+    SbscrbrEmail VARCHAR(100),
+    SbscrbrPhone VARCHAR(15),
+    AcctCreatedOn DATE,
+    PRIMARY KEY (AcctName)
+);
+
+-- Inserting a sample account
+INSERT INTO Account (AcctName, Password, LastSignedOn, SbscrbrName, SbscrbrAddress, SbscrbrEmail, SbscrbrPhone, AcctCreatedOn)
+VALUES ('user123', 'password123', '2024-09-10', 'John Doe', '123 Elm St.', 'john@example.com', '555-1234', '2023-01-15');
+
+-- Correct Character table with CharID as primary key
+CREATE TABLE `Character` (
+    CharID INT AUTO_INCREMENT,  -- Adding a unique auto-incrementing ID
+    CharName VARCHAR(50),
+    Level INT,
+    ExpPoints INT,
+    Type VARCHAR(50),
+    MaxHitPoints INT,
+    MaxMana INT,
+    CurrHitPoints INT,
+    CurrMana INT,
+    LastPlayed DATE,
+    CreatedOn DATE,
+    AcctName VARCHAR(50),
+    PRIMARY KEY (CharID),  -- CharID as primary key
+    FOREIGN KEY (AcctName) REFERENCES Account(AcctName)
+);
+
+-- Inserting a sample character
+INSERT INTO `Character` (CharName, Level, ExpPoints, Type, MaxHitPoints, MaxMana, CurrHitPoints, CurrMana, LastPlayed, CreatedOn, AcctName)
+VALUES ('Hero123', 5, 1500, 'Warrior', 100, 50, 90, 45, '2024-09-12', '2023-01-20', 'user123');
+
+-- Rest of the script remains the same
+-- Region table
+CREATE TABLE Region (
+    RegionName VARCHAR(50),
+    Climate VARCHAR(50),
+    Precipitation INT,
+    Foliage VARCHAR(50),
+    PRIMARY KEY (RegionName)
+);
+
+-- Inserting a sample region
+INSERT INTO Region (RegionName, Climate, Precipitation, Foliage)
+VALUES ('Forest', 'Temperate', 30, 'Dense');
+
+-- Item table
+CREATE TABLE Item (
+    ItemName VARCHAR(50),
+    ItemType VARCHAR(50),
+    ItemDamage INT,
+    PRIMARY KEY (ItemName)
+);
+
+-- Inserting a sample item
+INSERT INTO Item (ItemName, ItemType, ItemDamage)
+VALUES ('Sword', 'Weapon', 50);
+
+-- ItemInstantiation table
+CREATE TABLE ItemInstantiation (
+    IDNum INT,
+    Modifier VARCHAR(50),
+    WhenCreated DATE,
+    ItemName VARCHAR(50),
+    PRIMARY KEY (IDNum),
+    FOREIGN KEY (ItemName) REFERENCES Item(ItemName)
+);
+
+-- Inserting a sample item instantiation
+INSERT INTO ItemInstantiation (IDNum, Modifier, WhenCreated, ItemName)
+VALUES (1001, 'Flaming', '2024-09-12', 'Sword');
+
+-- Creep table
+CREATE TABLE Creep (
+    CreepName VARCHAR(50),
+    HitPoints INT,
+    Mana INT,
+    Attack INT,
+    PRIMARY KEY (CreepName)
+);
+
+-- Inserting a sample creep
+INSERT INTO Creep (CreepName, HitPoints, Mana, Attack)
+VALUES ('Goblin', 30, 10, 5);
+
+-- CreepInstantiation table
+CREATE TABLE CreepInstantiation (
+    IDNum INT,
+    CreepName VARCHAR(50),
+    PRIMARY KEY (IDNum),
+    FOREIGN KEY (CreepName) REFERENCES Creep(CreepName)
+);
+
+-- Inserting a sample creep instantiation
+INSERT INTO CreepInstantiation (IDNum, CreepName)
+VALUES (2001, 'Goblin');
